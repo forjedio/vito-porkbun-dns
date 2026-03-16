@@ -5,8 +5,8 @@ namespace App\Vito\Plugins\Forjedio\VitoPorkbunDns;
 use App\DNSProviders\AbstractDNSProvider;
 use App\Vito\Plugins\Forjedio\VitoPorkbunDns\Actions\ListDomains;
 use App\Vito\Plugins\Forjedio\VitoPorkbunDns\Actions\ManageRecords;
-use App\Vito\Plugins\Forjedio\VitoPorkbunDns\Services\PorkbunClient;
 use App\Vito\Plugins\Forjedio\VitoPorkbunDns\Actions\TestConnection;
+use App\Vito\Plugins\Forjedio\VitoPorkbunDns\Services\PorkbunClient;
 
 class Porkbun extends AbstractDNSProvider
 {
@@ -31,6 +31,44 @@ class Porkbun extends AbstractDNSProvider
             'secret_api_key' => $input['secret_api_key'],
             'domain_filter' => $input['domain_filter'] ?? '',
         ];
+    }
+
+    public function editableData(): array
+    {
+        return [
+            'domain_filter' => $this->dnsProvider->credentials['domain_filter'] ?? '',
+        ];
+    }
+
+    public function editValidationRules(array $input): array
+    {
+        return [
+            'api_key' => 'nullable|string',
+            'secret_api_key' => 'nullable|string',
+            'domain_filter' => 'nullable|string',
+        ];
+    }
+
+    public function mergeEditData(array $input): array
+    {
+        $credentials = $this->dnsProvider->credentials;
+        $needsReconnect = false;
+
+        if (! empty($input['api_key'])) {
+            $credentials['api_key'] = $input['api_key'];
+            $needsReconnect = true;
+        }
+
+        if (! empty($input['secret_api_key'])) {
+            $credentials['secret_api_key'] = $input['secret_api_key'];
+            $needsReconnect = true;
+        }
+
+        if (array_key_exists('domain_filter', $input)) {
+            $credentials['domain_filter'] = $input['domain_filter'] ?? '';
+        }
+
+        return [$credentials, $needsReconnect];
     }
 
     public function connect(array $credentials): bool

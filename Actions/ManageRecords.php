@@ -42,6 +42,7 @@ class ManageRecords
             'content' => $record['content'],
             'ttl' => $record['ttl'],
             'proxied' => false,
+            'priority' => isset($record['prio']) && $record['prio'] !== '' ? (int) $record['prio'] : null,
             'created_on' => null,
             'modified_on' => null,
         ])->toArray();
@@ -72,6 +73,7 @@ class ManageRecords
                 'content' => $input['content'],
                 'ttl' => $input['ttl'] ?? self::DEFAULT_TTL,
                 'proxied' => false,
+                'priority' => $input['priority'] ?? null,
             ];
         } catch (ValidationException $e) {
             throw $e;
@@ -107,6 +109,7 @@ class ManageRecords
                 'content' => $input['content'],
                 'ttl' => $input['ttl'] ?? self::DEFAULT_TTL,
                 'proxied' => false,
+                'priority' => $input['priority'] ?? null,
             ];
         } catch (ValidationException $e) {
             throw $e;
@@ -151,8 +154,8 @@ class ManageRecords
             'ttl' => $input['ttl'] ?? self::DEFAULT_TTL,
         ];
 
-        if (isset($input['prio'])) {
-            $data['prio'] = $input['prio'];
+        if (isset($input['priority'])) {
+            $data['prio'] = $input['priority'];
         }
 
         return $data;
