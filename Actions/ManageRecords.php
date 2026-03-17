@@ -42,7 +42,7 @@ class ManageRecords
             'content' => $record['content'],
             'ttl' => $record['ttl'],
             'proxied' => false,
-            'priority' => isset($record['prio']) && $record['prio'] !== '' ? (int) $record['prio'] : null,
+            'priority' => $record['type'] === 'MX' && isset($record['prio']) ? (int) $record['prio'] : null,
             'created_on' => null,
             'modified_on' => null,
         ])->toArray();

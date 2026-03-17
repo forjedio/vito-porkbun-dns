@@ -35,8 +35,6 @@ class Plugin extends AbstractPlugin
                         ->description('Optional comma-separated list of domains to show. Porkbun\'s API does not exclude domains without API access enabled, so you can filter them here instead. Leave empty to show all.'),
                 ])
             )
-            ->proxyTypes([])
-            ->supportsCreatedAt(false)
             ->editForm(
                 DynamicForm::make([
                     DynamicField::make('api_key')
@@ -54,6 +52,8 @@ class Plugin extends AbstractPlugin
                         ->description('Optional comma-separated list of domains to show. Leave empty to show all.'),
                 ])
             )
+            ->proxyTypes(['A'])
+            ->supportsCreatedAt(false)
             ->register();
     }
 }
