@@ -52,7 +52,7 @@ class Plugin extends AbstractPlugin
                         ->description('Optional comma-separated list of domains to show. Leave empty to show all.'),
                 ])
             )
-            ->proxyTypes(['A'])
+            ->proxyTypes()
             ->supportsCreatedAt(false)
             ->register();
     }
